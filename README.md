@@ -325,18 +325,18 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tra
 		array(	// Pasajero 1
 			'csitpassengeremail'=>'jperez@hotmail.com', //Email del pasajero. MANDATORIO.
 			'csitpassengerfirstname'=>'Juan', //Nombre del pasajero. MANDATORIO.
-			'csitpassengerid'=>'21457547', //Número de pasaporte. NO MANDATORIO.
+			'csitpassengerid'=>'11123123', //Número de pasaporte. NO MANDATORIO.
 			'csitpassengerlastname'=>'Perez', //Apellido del pasajero. MANDATORIO.
-			'csitpassengerphone'=>'541160913988', //Número de teléfono del pasajero. MANDATORIO.
+			'csitpassengerphone'=>'541145454545', //Número de teléfono del pasajero. MANDATORIO.
 			'csitpassengerstatus'=>'gold', //Clasificación del pasajero dentro de la empresa. MANDATORIO.
 			'csitpassengertype'=>'INF', //Tipo de pasajero asociado al precio del pasaje. MANDATORIO.(ADT: Adult,CNN: Child,INF: Infant,YTH: Youth,STU: Student,SCR: Senior Citizen,MIL: Military)
 		), 
 		array(	// Pasajero 2
 			'csitpassengeremail'=>'jperez@hotmail.com', //Email del pasajero. MANDATORIO.
 			'csitpassengerfirstname'=>'Juan', //Nombre del pasajero. MANDATORIO.
-			'csitpassengerid'=>'21457547', //Número de pasaporte. NO MANDATORIO.
+			'csitpassengerid'=>'12123123', //Número de pasaporte. NO MANDATORIO.
 			'csitpassengerlastname'=>'Perez', //Apellido del pasajero. MANDATORIO.
-			'csitpassengerphone'=>'541160913988', //Número de teléfono del pasajero. MANDATORIO.
+			'csitpassengerphone'=>'541145454546', //Número de teléfono del pasajero. MANDATORIO.
 			'csitpassengerstatus'=>'gold', //Clasificación del pasajero dentro de la empresa. MANDATORIO.
 			'csitpassengertype'=>'INF', //Tipo de pasajero asociado al precio del pasaje. MANDATORIO.(ADT: Adult,CNN: Child,INF: Infant,YTH: Youth,STU: Student,SCR: Senior Citizen,MIL: Military)
 		), 

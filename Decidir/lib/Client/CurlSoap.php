@@ -1,7 +1,7 @@
- <?php
-// Fix bug #49853 - https://bugs.php.net/bug.php?id=49853
+<?php
 namespace Decidir\Client;
 
+// Fix bug #49853 - https://bugs.php.net/bug.php?id=49853
 class CurlSoap extends \SoapClient
 {
 	protected $custom_headers;

@@ -23,7 +23,7 @@ $data = json_decode($orden[0]['data'],true);
   <body>
         <form action="checkout.php" method="POST" id="payform">
             <label for="CardNumber">Numero de Tarjeta</label><br>
-            <input type="number" class="form-control" id="CardNumber" placeholder="Ej.: 44114411" required="required"> <br>
+            <input type="text" class="form-control" id="CardNumber" placeholder="Ej.: 44114411" required="required"> <br>
             <label for="CardHolderName">Nombre</label><br>
             <input type="text" class="form-control" id="CardHolderName" placeholder="Ingrese su nombre" required="required"><br>
             <label for="CardExpirationDate">Vencimiento</label><br>

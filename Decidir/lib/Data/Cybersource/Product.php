@@ -42,7 +42,11 @@ class Product extends \Decidir\Data\AbstractData {
 			),		
 		));		
 		
-		parent::__construct($productData);	
+		parent::__construct($productData);
+		
+		$this->csittotalamount = number_format($this->csittotalamount,2,".","");
+		$this->csitunitprice = number_format($this->csitunitprice,2,".","");
+		$this->csitquantity = number_format($this->csitquantity,0,"","");		
 	}
 	
 	public function getCsitproductcode() {

@@ -1,7 +1,7 @@
 <?php
 namespace Decidir\Data\Cybersource;
 
-class Passenger {
+class Passenger extends \Decidir\Data\AbstractData {
 	protected $csitpassengeremail;
 	protected $csitpassengerfirstname;
 	protected $csitpassengerid;
