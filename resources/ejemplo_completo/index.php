@@ -4,10 +4,10 @@ include_once dirname(__FILE__)."/FlatDb.php";
 
 $db = new FlatDb();
 if(!file_exists("ordenes.tsv"))
-	$db->createTable('ordenes',array("id","status","data","mediodepago","sar","form","gaa","requestkey","publicrequestkey","answerkey"));
+	$db->createTable('ordenes',array("id","merchantId","security","status","data","mediodepago", "split","sar","form","gaa","requestkey","publicrequestkey","answerkey"));
 $db->openTable('ordenes');
 
-$ord = $db->getRecords(array("id","status","data","mediodepago","sar","form","gaa","requestkey","publicrequestkey","answerkey"));
+$ord = $db->getRecords(array("id","merchantId","security","status","data","mediodepago", "split", "sar","form","gaa","requestkey","publicrequestkey","answerkey"));
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -35,7 +35,7 @@ text-transform: uppercase;
 box-shadow: 0 0 7px black;
 
 }
-</style>     
+</style>
 </head>
 <body>
 <div id="container">
@@ -45,18 +45,19 @@ box-shadow: 0 0 7px black;
 <div id="m-status" style="margin-bottom: 300px">
 
 	<div class="block">
-	
+
 	<table id="tablelist" class="full tablesorter">
 	<thead>
 		<tr>
 	    	      <th class="header">Operacion</th>
 	    	      <th class="header">Estado</th>
 				  <th class="header">Medio de Pago</th>
+				  <th class="header">Split</th>
 	    	      <th class="header">SAR</th>
 				  <th class="header">Pagar</th>
 				  <th class="header">GAA</th>
 				  <th class="header">GetByOpId</th>
-				  <th class="header">Anular / Devolver</th>	  
+				  <th class="header">Anular / Devolver</th>
 		</tr>
 	</thead>
 	<tbody><?php foreach($ord as $o):?>
@@ -64,6 +65,7 @@ box-shadow: 0 0 7px black;
 	      		<td><?php echo $o['id'];?></td>
 	      		<td><?php echo $o['status'];?></td>
 				<td><?php echo $o['mediodepago']; if($o['mediodepago'] == 0): ?> <a href="mediopago.php?ord=<?php echo $o['id'];?>" class="btn site btn-sm">Agregar datos de Medio de Pago</a><?php endif;?></td>
+				<td><?php echo $o['split']; if($o['split'] == 0): ?> <a href="split.php?ord=<?php echo $o['id'];?>" class="btn site btn-sm">Agregar datos de Split</a><?php endif;?></td>
 				<td><?php echo $o['sar']; if($o['sar'] == 0): ?> <a href="sar.php?ord=<?php echo $o['id'];?>" class="btn site btn-sm">Send Authorize Request</a><?php endif;?></td>
 				<td><?php echo $o['form']; if($o['form'] == 0): ?> <a href="pagar.php?ord=<?php echo $o['id'];?>" class="btn site btn-sm">Pagar</a><?php endif;?></td>
 				<td><?php echo $o['gaa']; if($o['gaa'] == 0): ?> <a href="gaa.php?ord=<?php echo $o['id'];?>" class="btn site btn-sm">Get Authorize Answer</a><?php endif;?></td>
@@ -76,10 +78,10 @@ box-shadow: 0 0 7px black;
 	  <tr>
 	    <td colspan="7"><a href="create.php" class="btn info">Nuevo</a></td>
 	  </tr>
-	</tfoot>	
+	</tfoot>
 		</table>
 	</div>
-</div> 
+</div>
 		</div>
 		<div class="clearfix"></div>
 	</div>

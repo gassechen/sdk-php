@@ -2,31 +2,32 @@
 namespace Decidir\Data;
 
 abstract class AbstractData {
-	
+
 	private $field_required = array();
 	private $field_optional = array();
-	
+
 	public function __construct(array $data) {
+		$this->data_array = $data;
 		foreach($this->field_required as $field => $options) {
 			if(isset($options["original"])) {
 				if(!array_key_exists($options["original"],$data))
-					throw new \Decidir\Exception\RequiredValue($options["name"]);
+					throw new \Decidir\Exception\RequiredValueException($options["name"]);
 				$this->$field = $data[$options["original"]];
-				unset($data[$options["original"]]);				
+				unset($data[$options["original"]]);
 			} else {
 				if(!array_key_exists($field,$data))
-					throw new \Decidir\Exception\RequiredValue($options["name"]);
+					throw new \Decidir\Exception\RequiredValueException($options["name"]);
 				$this->$field = $data[$field];
 				unset($data[$field]);
 			}
 		}
-		
+
 		foreach($this->field_optional as $field => $options) {
 			if(isset($options["original"])) {
 				if(array_key_exists($options["original"],$data)) {
 					$this->$field 	= $data[$options["original"]];
 					unset($data[$options["original"]]);
-				}			
+				}
 			} else {
 				if(array_key_exists($field,$data)) {
 					$this->$field 	= $data[$field];
@@ -34,11 +35,11 @@ abstract class AbstractData {
 				}
 			}
 		}
-		
+
 		if(count($data) > 0)
 			throw new \Decidir\Exception\DecidirException("Campos adicionales a los esperados: ". implode(", ",array_keys($data)), 99977, $this);
 	}
-	
+
 	protected function getXmlData() {
 		$output = "";
 		foreach(array_merge($this->field_required, $this->field_optional) as $field => $options) {
@@ -48,11 +49,11 @@ abstract class AbstractData {
 		}
 		return $output;
 	}
-	
+
 	protected function getRequiredFields() {
 		return $this->field_required;
 	}
-	
+
 	protected function getOptionalFields() {
 		return $this->field_optional;
 	}
@@ -60,8 +61,12 @@ abstract class AbstractData {
 	protected function setRequiredFields($data) {
 		$this->field_required = array_merge($data, $this->field_required);
 	}
-	
+
 	protected function setOptionalFields($data) {
 		$this->field_optional = array_merge($data, $this->field_optional);
+	}
+
+	public function toArray() {
+		return $this->data_array;
 	}
 }

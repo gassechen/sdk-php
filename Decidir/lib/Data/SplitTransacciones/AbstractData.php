@@ -2,21 +2,21 @@
 
 namespace Decidir\Data\SplitTransacciones;
 
-class AbstractData extends \Decidir\Data\AbstractData 
+class AbstractData extends \Decidir\Data\AbstractData
 {
 	protected $idmodalidad;
-	
-	public __construct(array $data) {
+
+	public function __construct(array $data) {
 		$this->setRequiredFields(array(
 			"idmodalidad" => array(
 				"name" => "SplitTransacciones - Id Modalidad",
 				"xml" => "IDMODALIDAD"
-			), 
+			),
 		));
-		
+
 		parent::__construct($data);
 	}
-	
+
 	public function getIdmodalidad() {
 		return $this->idmodalidad;
 	}
@@ -24,7 +24,7 @@ class AbstractData extends \Decidir\Data\AbstractData
 	public function setIdmodalidad($idmodalidad) {
 		$this->idmodalidad = $idmodalidad;
 	}
-	
+
 	public function getData() {
 		return $this->getXmlData();
 	}

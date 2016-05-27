@@ -7,14 +7,22 @@ $operationid = $_GET['ord'];
 $db = new FlatDb();
 $db->openTable('ordenes');
 
-$http_header = array('Authorization'=>'PRISMA RV82RVHO5T0O5CZUUTX2FLHU',
+$orden = $db->getRecords(array("id","merchantId","security","status","data","mediodepago","sar","form","gaa","requestkey","answerkey"),array("id" => $operationid));
+
+$data = json_decode($orden[0]['data'],true);
+
+$merchantId = $orden[0]['merchantId'];
+$security = $orden[0]['security'];
+$authorize = "PRISMA ".$security;
+
+$http_header = array('Authorization'=>$authorize,
  'user_agent' => 'PHPSoapClient');
 
 //datos constantes
 define('CURRENCYCODE', 032);
-define('MERCHANT', 22067736);
+define('MERCHANT', $merchantId);
 define('ENCODINGMETHOD', 'XML');
-define('SECURITY', 'RV82RVHO5T0O5CZUUTX2FLHU');
+define('SECURITY', $security);
 
 $connector = new Decidir\Connector($http_header, Decidir\Connector::DECIDIR_ENDPOINT_TEST);
 

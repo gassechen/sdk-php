@@ -23,7 +23,7 @@ Modulo para conexión con gateway de pago DECIDIR
     * [Split de Transacciones](#split-de-transacciones)
       * [Monto Fijo](#monto-fijo)
       * [Porcentaje](#porcentaje)	  
-  * [GetAuthorizeAnswer] (#getauthorizeanswer) 
+  * [GetAuthorizeAnswer] (#getauthorizeanswer)
   * [Execute](#execute)
     * [Anulación](#anulación)
     * [Devolución Total](#devolución-total)
@@ -33,18 +33,18 @@ Modulo para conexión con gateway de pago DECIDIR
     * [Códigos de Medios de Pago](#códigos-de-medios-de-pago)
     * [Códigos de Estado](#códigos-de-estado)
     * [Provincias](#provincias)
- 
- 
+
+
 ## Instalación
 Se debe descargar la última versión del SDK desde el botón Download ZIP, branch master.		
 Una vez descargado y descomprimido, debe incluirse el archivo autoload.php que se encuentra en la carpeta /vendor como librería dentro del proyecto.		
 <br />		
 
 También se puede realizar la instalación a través de Composer.<br/>
-```composer require decidir/php-sdk```<br/>
+`composer require decidir/php-sdk`<br/>
 E incluir el archivo vendor/autoload.php en el proyecto.<br/>
 <br/>
-Observación: Descomentar: **extension=php_soap.dll** y **extension=php_openssl.dll** del php.ini, ya que para la conexión al gateway se utiliza la clase SoapClient del API de PHP. 
+**Observación**: Descomentar: **extension=php_soap.dll** y **extension=php_openssl.dll** del php.ini, ya que para la conexión al gateway se utiliza la clase SoapClient del API de PHP.
 
 [Volver al inicio](#decidir-sdk-php)
 
@@ -61,10 +61,11 @@ La misma recibe como parámetros el Header HTTP provisto por Decidir para el com
 
 ```php
 	$http_header = array('Authorization'=>'PRISMA RV82RVHO5T0O5CZUUTX2FLHU');
-	$enpoint = Decidir\Connector::DECIDIR_ENDPOINT_TEST; // Opciones disponibles: DECIDIR_ENDPOINT_TEST, DECIDIR_ENDPOINT_PROD
+	$endpoint = Decidir\Connector::DECIDIR_ENDPOINT_TEST; // Opciones disponibles: DECIDIR_ENDPOINT_TEST, DECIDIR_ENDPOINT_PROD
 
 	$connector = new Decidir\Connector($http_header, $endpoint);
 ```
+*Nota:* La sdk incluye 2  ejemplos, uno simpple para ejecutar por consola editando los valores en el código y otro completo al cuél se debe acceder desde el navegador y allí te permitirá configurar las distintas opciones. Debido a una ampliación en las funcionalidades de este último, si usted tenía una versión anterior a la 1.0.2 deberá eliminar el archivo _ordenes.tsv_ para el correcto funcionamiento.
 
 [Volver al inicio](#decidir-sdk-php)
 
@@ -79,7 +80,7 @@ Debe crearse una instancia de la clase `Decidir\Authorize\SendAuthorizeRequest\D
 																"encoding_method" => 'XML', // Opcional
 																"merchant" => 22067736, // Mandatorio. Nro. de Comercio provisto por Decidir
 																"nro_operacion" => 123456, // Mandatorio. Nro. de operación único y propio del comercio
-																"monto" => 50.00, // Mandatorio. Monto de la operación 
+																"monto" => 50.00, // Mandatorio. Monto de la operación
 																"email_cliente" => 'ejemplo@misitio.com' // Mandatorio. E-mail del cliente
 															));
 ```
@@ -89,7 +90,7 @@ Luego se debe invocar al servicio pasándole como parámetro el objeto anteriorm
 ```php
 	$sar_rta = $connector->Authorize()->sendAuthorizeRequest($sar_data);
 ```
-El mismo devolverá una instalcia de la clase `Decidir\Authorize\SendAuthorizeRequest\Response`
+El mismo devolverá una instancia de la clase `Decidir\Authorize\SendAuthorizeRequest\Response`
 
 ```php
 	$sar_rta->getStatusMessage(); // Mensaje del estado del requerimiento
@@ -245,10 +246,10 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Ret
 		'csmdd12'=>'',//Shipping DeadLine (Num Dias). NO MADATORIO.
 		'csmdd13'=>'',//Método de Despacho. NO MANDATORIO.
 		'csmdd14'=>'',//Customer requires Tax Bill ? (Y/N). NO MANDATORIO.
-		'csmdd15'=>'',//Customer Loyality Number. NO MANDATORIO. 
+		'csmdd15'=>'',//Customer Loyality Number. NO MANDATORIO.
 		'csmdd16'=>'',//Promotional / Coupon Code. NO MANDATORIO.
 	);
-	
+
 	//Datos de productos, un array con los diferentes productos involucrados.
 	$productos = array(
 		array(	// Producto 1
@@ -259,7 +260,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Ret
 			'csittotalamount'=>'1254.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'1254.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO		
-		), 
+		),
 		array(	// Producto 2
 			'csitproductcode'=>'default', //Código de producto. MANDATORIO. Valores posibles(adult_content;coupon;default;electronic_good;electronic_software;gift_certificate;handling_only;service;shipping_and_handling;shipping_only;subscription)
 			'csitproductdescription'=>'PENDRIVE 2GB KINGSTON', //Descripción del producto. MANDATORIO.
@@ -268,7 +269,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Ret
 			'csittotalamount'=>'248.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'248.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO			
-		), 
+		),
 		......... // Otros productos
 	);
 
@@ -280,12 +281,12 @@ Para incorporar estos datos en el requerimiento inicial, se debe instanciar un o
 
 	//Se combinan los datos de retail con los comunes
 	$datos_cs = array_merge($datos_comunes, $datos_retail);
-	
+
 	$cybersource = new Decidir\Data\Cybersource\Retail(
 										$datos_cs,	// Datos de la operación
 										$productos, // Datos de los productos
 	);
-	
+
 	//Se agregan los datos el requerimiento inicial
 	$sar_data->setCybersourceData($cybersource);
 ```
@@ -301,13 +302,13 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tra
 		'csdmcompleteroute'=>'JFK-SFO:SFO-LAX', //Ruta completa del viaje, ORIG1-DEST1[:ORIG2-DEST2...:ORIGn-DESTn]. MANDATORIO.
 		'csdmjourneytypey'=>'round trip', //Tipo de viaje. valores posibles: round trip o one way. MANDATORIO.
 		'csdmdeparturedatetime'=>'2011-03-20 11:30pm GMT', /* Fecha y hora del primer tramo del viaje. Utilizar GMT.
-									Formato: yyyy-MM-dd hh:mma z donde: 
+									Formato: yyyy-MM-dd hh:mma z donde:
 									hh = hora en formato 12-horas
 									a = am o pm
 									z = huso horario del vuelo de salida. Por ejemplo: Si la compañía tiene su sede en la ciudad de A, pero el vuelo sale de la ciudad B, z es el horario de la ciudad B al momento de la salida
 									MANDATORIO */
 		'csadnumberofpassengers'=>'4', //Cantidad total de pasajeros. MANDATORIO.
-		'csmdd17'=>'AWHWNV', //Código de Reserva (PNR). MANDATORIO. 
+		'csmdd17'=>'AWHWNV', //Código de Reserva (PNR). MANDATORIO.
 		'csmdd18'=>'N', //3rd Party Booking? (Y/N). MANDATORIO.
 		'csmdd19'=>'', //Departure City. NO MANDATORIO.
 		'csmdd20'=>'', //Final Destination City. NO MANDATORIO.
@@ -319,7 +320,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tra
 		'csmdd26'=>'', //Airline Code. NO MANDATORIO.
 		'csmdd27'=>'', //Code Share. NO MANDATORIO.
 	);
-	
+
 	//Datos de pasajeros, un array con los diferentes pasajeros involucrados.
 	$pasajeros = array(
 		array(	// Pasajero 1
@@ -330,7 +331,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tra
 			'csitpassengerphone'=>'541145454545', //Número de teléfono del pasajero. MANDATORIO.
 			'csitpassengerstatus'=>'gold', //Clasificación del pasajero dentro de la empresa. MANDATORIO.
 			'csitpassengertype'=>'INF', //Tipo de pasajero asociado al precio del pasaje. MANDATORIO.(ADT: Adult,CNN: Child,INF: Infant,YTH: Youth,STU: Student,SCR: Senior Citizen,MIL: Military)
-		), 
+		),
 		array(	// Pasajero 2
 			'csitpassengeremail'=>'jperez@hotmail.com', //Email del pasajero. MANDATORIO.
 			'csitpassengerfirstname'=>'Juan', //Nombre del pasajero. MANDATORIO.
@@ -339,7 +340,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tra
 			'csitpassengerphone'=>'541145454546', //Número de teléfono del pasajero. MANDATORIO.
 			'csitpassengerstatus'=>'gold', //Clasificación del pasajero dentro de la empresa. MANDATORIO.
 			'csitpassengertype'=>'INF', //Tipo de pasajero asociado al precio del pasaje. MANDATORIO.(ADT: Adult,CNN: Child,INF: Infant,YTH: Youth,STU: Student,SCR: Senior Citizen,MIL: Military)
-		), 
+		),
 		......... // Otros pasajeros
 	);
 
@@ -351,12 +352,12 @@ Para incorporar estos datos en el requerimiento inicial, se debe instanciar un o
 
 	//Se combinan los datos de travel con los comunes
 	$datos_cs = array_merge($datos_comunes, $datos_travel);
-	
+
 	$cybersource = new Decidir\Data\Cybersource\Travel(
 										$datos_cs,	// Datos de la operación
 										$pasajeros, // Datos de los pasajeros
 	);
-	
+
 	//Se agregan los datos el requerimiento inicial
 	$sar_data->setCybersourceData($cybersource);
 ```
@@ -372,7 +373,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tic
 		'csmdd33'=> 15, //Número de días en los que se desarrollara el evento. MANDATORIO
 		'csmdd34'=>'Email', //Tipo de envío. MANDATORIO. Valores posibles: Pick up, Email, Smartphone, Other
 	);
-	
+
 	//Datos de productos, un array con los diferentes productos involucrados.
 	$productos = array(
 		array(	// Producto 1
@@ -383,7 +384,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tic
 			'csittotalamount'=>'1254.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'1254.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO		
-		), 
+		),
 		array(	// Producto 2
 			'csitproductcode'=>'default', //Código de producto. MANDATORIO. Valores posibles(adult_content;coupon;default;electronic_good;electronic_software;gift_certificate;handling_only;service;shipping_and_handling;shipping_only;subscription)
 			'csitproductdescription'=>'PENDRIVE 2GB KINGSTON', //Descripción del producto. MANDATORIO.
@@ -392,7 +393,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Tic
 			'csittotalamount'=>'248.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'248.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO			
-		), 
+		),
 		......... // Otros productos
 	);
 
@@ -404,12 +405,12 @@ Para incorporar estos datos en el requerimiento inicial, se debe instanciar un o
 
 	//Se combinan los datos de ticketing con los comunes
 	$datos_cs = array_merge($datos_comunes, $datos_ticketing);
-	
+
 	$cybersource = new Decidir\Data\Cybersource\Ticketing(
 										$datos_cs,	// Datos de la operación
 										$productos, // Datos de los productos
 	);
-	
+
 	//Se agregan los datos el requerimiento inicial
 	$sar_data->setCybersourceData($cybersource);
 ```
@@ -427,7 +428,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Ser
 		'csmdd30'=>'', //Referencia de pago del servicio 2. NO MANDATORIO.
 		'csmdd31'=>'', //Referencia de pago del servicio 3. NO MANDATORIO.
 	);
-	
+
 	//Datos de productos, un array con los diferentes productos involucrados.
 	$productos = array(
 		array(	// Producto 1
@@ -438,7 +439,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Ser
 			'csittotalamount'=>'1254.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'1254.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO		
-		), 
+		),
 		array(	// Producto 2
 			'csitproductcode'=>'default', //Código de producto. MANDATORIO. Valores posibles(adult_content;coupon;default;electronic_good;electronic_software;gift_certificate;handling_only;service;shipping_and_handling;shipping_only;subscription)
 			'csitproductdescription'=>'PENDRIVE 2GB KINGSTON', //Descripción del producto. MANDATORIO.
@@ -447,7 +448,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Ser
 			'csittotalamount'=>'248.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'248.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO			
-		), 
+		),
 		......... // Otros productos
 	);
 
@@ -459,12 +460,12 @@ Para incorporar estos datos en el requerimiento inicial, se debe instanciar un o
 
 	//Se combinan los datos de services con los comunes
 	$datos_cs = array_merge($datos_comunes, $datos_services);
-	
+
 	$cybersource = new Decidir\Data\Cybersource\Services(
 										$datos_cs,	// Datos de la operación
 										$productos, // Datos de los productos
 	);
-	
+
 	//Se agregan los datos el requerimiento inicial
 	$sar_data->setCybersourceData($cybersource);
 ```
@@ -479,7 +480,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Dig
 	$datos_digitalgoods = array(
 		'csmdd31'=>'', //Tipo de delivery. MANDATORIO. Valores posibles: WEB Session, Email, SmartPhone
 	);
-	
+
 	//Datos de productos, un array con los diferentes productos involucrados.
 	$productos = array(
 		array(	// Producto 1
@@ -490,7 +491,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Dig
 			'csittotalamount'=>'1254.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'1254.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO		
-		), 
+		),
 		array(	// Producto 2
 			'csitproductcode'=>'default', //Código de producto. MANDATORIO. Valores posibles(adult_content;coupon;default;electronic_good;electronic_software;gift_certificate;handling_only;service;shipping_and_handling;shipping_only;subscription)
 			'csitproductdescription'=>'PENDRIVE 2GB KINGSTON', //Descripción del producto. MANDATORIO.
@@ -499,7 +500,7 @@ Los siguientes parámetros se deben enviar específicamente para la vertical Dig
 			'csittotalamount'=>'248.40', //CSITTOTALAMOUNT=CSITUNITPRICE*CSITQUANTITY "999999[.CC]" Con decimales opcional usando el puntos como separador de decimales. No se permiten comas, ni como separador de miles ni como separador de decimales. MANDATORIO.
 			'csitquantity'=>'1', //Cantidad del producto. MANDATORIO.
 			'csitunitprice'=>'248.40', //Formato Idem CSITTOTALAMOUNT. MANDATORIO			
-		), 
+		),
 		......... // Otros productos
 	);
 
@@ -511,12 +512,12 @@ Para incorporar estos datos en el requerimiento inicial, se debe instanciar un o
 
 	//Se combinan los datos de digitalgoods con los comunes
 	$datos_cs = array_merge($datos_comunes, $datos_digitalgoods);
-	
+
 	$cybersource = new Decidir\Data\Cybersource\DigitalGoods(
 										$datos_cs,	// Datos de la operación
 										$productos, // Datos de los productos
 	);
-	
+
 	//Se agregan los datos el requerimiento inicial
 	$sar_data->setCybersourceData($cybersource);
 ```
@@ -565,7 +566,6 @@ Debe instanciarse un objeto de la clase `Decidir\Data\SplitTransacciones\MontoFi
 
 ```php
 	$split = new Decidir\Data\SplitTransacciones\MontoFijo( array(
-														'nrocomercio'=>'12345678'//Número de comercio padre provisto por SPS DECIDIR. Alfanumérico de 8 caracteres.
 														'impdist'=>'123.4#12#12.05',//Importe de cada una de las substransacciones. Los importes deben postearse separados por "#".
 														'sitedist'=>'00100511#0234803245#00230031',//Número de comercio de cada uno de los subcomercios asociados al comercio padre
 														'cuotasdist'=>'01#06#24',//cantidad de cuotas para cada subcomercio. Decimal de 2 dígitos.
@@ -784,38 +784,38 @@ El mismo devolverá una instalcia de la clase `Decidir\Operation\GetByOperationI
 
 | IdEstado | Descripción |
 |----------|-------------|
-| 1 | Ingresada | 
-| 2 | A procesar | 
-| 3 | Procesada | 
-| 4 | Autorizada | 
-| 5 | Rechazada | 
-| 6 | Acreditada | 
-| 7 | Anulada | 
-| 8 | Anulación Confirmada | 
-| 9 | Devuelta | 
-| 10 | Devolución Confirmada | 
-| 11 | Pre autorizada | 
-| 12 | Vencida | 
-| 13 | Acreditación no cerrada | 
-| 14 | Autorizada * | 
-| 15 | A reversar | 
-| 16 | A registar en Visa | 
-| 17 | Validación iniciada en Visa | 
-| 18 | Enviada a validar en Visa | 
-| 19 | Validada OK en Visa | 
-| 20 | Recibido desde Visa | 
-| 21 | Validada no OK en Visa | 
-| 22 | Factura generada | 
-| 23 | Factura no generada | 
-| 24 | Rechazada no autenticada | 
-| 25 | Rechazada datos inválidos | 
-| 28 | A registrar en IdValidador | 
-| 29 | Enviada a IdValidador | 
-| 32 | Rechazada no validada | 
-| 38 | Timeout de compra | 
-| 50 | Ingresada Distribuida | 
-| 51 | Rechazada por grupo | 
-| 52 | Anulada por grupo | 
+| 1 | Ingresada |
+| 2 | A procesar |
+| 3 | Procesada |
+| 4 | Autorizada |
+| 5 | Rechazada |
+| 6 | Acreditada |
+| 7 | Anulada |
+| 8 | Anulación Confirmada |
+| 9 | Devuelta |
+| 10 | Devolución Confirmada |
+| 11 | Pre autorizada |
+| 12 | Vencida |
+| 13 | Acreditación no cerrada |
+| 14 | Autorizada * |
+| 15 | A reversar |
+| 16 | A registar en Visa |
+| 17 | Validación iniciada en Visa |
+| 18 | Enviada a validar en Visa |
+| 19 | Validada OK en Visa |
+| 20 | Recibido desde Visa |
+| 21 | Validada no OK en Visa |
+| 22 | Factura generada |
+| 23 | Factura no generada |
+| 24 | Rechazada no autenticada |
+| 25 | Rechazada datos inválidos |
+| 28 | A registrar en IdValidador |
+| 29 | Enviada a IdValidador |
+| 32 | Rechazada no validada |
+| 38 | Timeout de compra |
+| 50 | Ingresada Distribuida |
+| 51 | Rechazada por grupo |
+| 52 | Anulada por grupo |
 
 [Volver al inicio](#decidir-sdk-php)
 
@@ -823,29 +823,29 @@ El mismo devolverá una instalcia de la clase `Decidir\Operation\GetByOperationI
 
 | Provincia | Código |
 |----------|-------------|
-| CABA | C | 
-| Buenos Aires | B | 
-| Catamarca | K | 
-| Chaco | H | 
-| Chubut | U | 
-| Córdoba | X | 
-| Corrientes | W | 
-| Entre Ríos | R | 
-| Formosa | P | 
-| Jujuy | Y | 
-| La Pampa | L | 
-| La Rioja | F | 
-| Mendoza | M | 
-| Misiones | N | 
-| Neuquén | Q | 
-| Río Negro | R | 
-| Salta | A | 
-| San Juan | J | 
-| San Luis | D | 
-| Santa Cruz | Z | 
-| Santa Fe | S | 
-| Santiago del Estero | G | 
-| Tierra del Fuego | V | 
+| CABA | C |
+| Buenos Aires | B |
+| Catamarca | K |
+| Chaco | H |
+| Chubut | U |
+| Córdoba | X |
+| Corrientes | W |
+| Entre Ríos | R |
+| Formosa | P |
+| Jujuy | Y |
+| La Pampa | L |
+| La Rioja | F |
+| Mendoza | M |
+| Misiones | N |
+| Neuquén | Q |
+| Río Negro | R |
+| Salta | A |
+| San Juan | J |
+| San Luis | D |
+| Santa Cruz | Z |
+| Santa Fe | S |
+| Santiago del Estero | G |
+| Tierra del Fuego | V |
 | Tucumán | T | 	
 
 [Volver al inicio](#decidir-sdk-php)

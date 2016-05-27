@@ -6,12 +6,14 @@ function func1($a,$b){return $a*$b;}
 if($_POST) {
 	$db = new FlatDb();
 	$db->openTable('ordenes');
-	
+
+	$merchantId = $_POST['merchant'];
+	$security = $_POST['security'];
 	$operationid = $_POST['operacion'];
 	$data = array(
 		"monto" => $_POST['monto'],
 		"email_cliente" => $_POST['email'],
-		
+
 		"cs_data" => array(
 			"csstcity" => $_POST['city'],
 			"csstcountry" => $_POST['country'],
@@ -22,9 +24,9 @@ if($_POST) {
 			"csstpostalcode" => $_POST['postalcode'],
 			"csststate" => $_POST['state'],
 			"csststreet1" => $_POST['street1'],
-			
+
 			"device_fingerprint" => $_POST['operacion'],
-			
+
 			"csbtcity" => $_POST['city'],
 			"csbtcountry" => $_POST['country'],
 			"csbtemail" => $_POST['email'],
@@ -33,11 +35,11 @@ if($_POST) {
 			"csbtphonenumber" => $_POST['phonenumber'],
 			"csbtpostalcode" => $_POST['postalcode'],
 			"csbtstate" => $_POST['state'],
-			"csbtstreet1" => $_POST['street1'],		
+			"csbtstreet1" => $_POST['street1'],
 			"csbtcustomerid" => rand(999, 9999),
 			"csbtipaddress" => "127.0.0.1",
 			"csptcurrency" => "ARS",
-			"csptgrandtotalamount" => $_POST['monto'],			
+			"csptgrandtotalamount" => $_POST['monto'],
 		),
 		"cs_product" => array(
 			array(
@@ -47,7 +49,7 @@ if($_POST) {
 				"csitproductsku" => $_POST['productsku'][0],
 				"csittotalamount" => $_POST['quantity'][0]*$_POST['unitprice'][0],
 				"csitquantity" => $_POST['quantity'][0],
-				"csitunitprice" => $_POST['unitprice'][0],			
+				"csitunitprice" => $_POST['unitprice'][0],
 			),
 			array(
 				"csitproductcode" => $_POST['productcode'][1],
@@ -56,13 +58,13 @@ if($_POST) {
 				"csitproductsku" => $_POST['productsku'][1],
 				"csittotalamount" => $_POST['quantity'][1]*$_POST['unitprice'][1],
 				"csitquantity" => $_POST['quantity'][1],
-				"csitunitprice" => $_POST['unitprice'][1],			
-			),	
+				"csitunitprice" => $_POST['unitprice'][1],
+			),
 		),
 	);
-	
-	$db->insertRecord(array("id" => $operationid,"status" => "PENDIENTE", "data" => json_encode($data), "mediodepago" => 0, "sar" => 0, "form" => 0, "gaa" => 0, "requestkey" => "", "answerkey" => ""));
-	
+
+	$db->insertRecord(array("id" => $operationid, "merchantId" => $merchantId, "security" => $security, "status" => "PENDIENTE", "data" => json_encode($data), "mediodepago" => 0, "split" => 0, "sar" => 0, "form" => 0, "gaa" => 0, "requestkey" => "", "answerkey" => ""));
+
 	header("Location: index.php");
 }
 ?>
@@ -91,7 +93,7 @@ text-transform: uppercase;
 box-shadow: 0 0 7px black;
 
 }
-</style>     
+</style>
 </head>
 <body>
 <div id="container">
@@ -105,15 +107,20 @@ box-shadow: 0 0 7px black;
 		<table id="tablelist" class="full tablesorter">
 			<tbody>
 				<tr>
-				  <td><b>Operacion</b></td><td><input type="text" name="operacion" value="<?php echo rand(99999,9999999); ?>"></input></td>
-				  </tr>
-						  <tr>
+			  	   <td><b>Merchant</b></td><td><input type="text" name="merchant" value=""></input></td>
+			  	</tr>
+				<tr>
+			  	   <td><b>Security</b></td><td><input type="text" name="security" value=""></input></td>
+			  	</tr>
+				<tr>
+				  <td><b>Operacion</b></td><td><input type="text" name="operacion" value="<?php echo "sdk_php".rand(99999,9999999); ?>"></input></td>
+				</tr>
+				<tr>
 				  <td><b>Monto</b></td><td><input type="text" name="monto" value="50.00"></input></td>
-				  </tr>
-						  <tr>
+				</tr>
+				<tr>
 				  <td><b>Email</b></td><td><input type="text" name="email" value="email@example.com"></input></td>
-				  </tr>
-			
+				</tr>
 				<tr>
 				  <td><b>CS - Ciudad</b></td><td><input type="text" name="city" value="CABA"></input></td>
 				</tr>
@@ -137,55 +144,55 @@ box-shadow: 0 0 7px black;
 				</tr>
 				<tr>
 				  <td><b>CS - Domicilio</b></td><td><input type="text" name="street1" value="Calle Falsa 123"></input></td>
-				</tr>	
-				
+				</tr>
+
 				<tr>
 				  <td><b>CS - Producto 1 - ProductCode</b></td><td><input type="text" name="productcode[]" value="default"></input></td>
-				</tr>				
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 1 - Descripcion</b></td><td><input type="text" name="productdescription[]" value="Producto 1, descripcion lorem ipsum..."></input></td>
-				</tr>				
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 1 - Nombre</b></td><td><input type="text" name="productname[]" value="Cosa"></input></td>
-				</tr>				
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 1 - SKU</b></td><td><input type="text" name="productsku[]" value="SKUCOSA1"></input></td>
-				</tr>	
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 1 - Precio Unitario</b></td><td><input type="text" name="unitprice[]" value="10.00"></input></td>
-				</tr>	
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 1 - Cantidad</b></td><td><input type="text" name="quantity[]" value="1"></input></td>
 				</tr>
 
 				<tr>
 				  <td><b>CS - Producto 2 - ProductCode</b></td><td><input type="text" name="productcode[]" value="default"></input></td>
-				</tr>				
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 2 - Descripcion</b></td><td><input type="text" name="productdescription[]" value="Producto 2, descripcion lorem ipsum..."></input></td>
-				</tr>				
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 2 - Nombre</b></td><td><input type="text" name="productname[]" value="Cosa 2"></input></td>
-				</tr>				
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 2 - SKU</b></td><td><input type="text" name="productsku[]" value="SKUCOSA2"></input></td>
-				</tr>	
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 2 - Precio Unitario</b></td><td><input type="text" name="unitprice[]" value="10.00"></input></td>
-				</tr>	
+				</tr>
 				<tr>
 				  <td><b>CS - Producto 2 - Cantidad</b></td><td><input type="text" name="quantity[]" value="1"></input></td>
-				</tr>				
-				</tbody>	
+				</tr>
+				</tbody>
 			<tfoot>
 			  <tr>
 				<td colspan="2"><a href="index.php" class="btn error site">Cancelar</a>&nbsp;&nbsp;&nbsp;<a href="create.php" onclick="$('#activeform').submit();return false;" class="btn site" id="send">Enviar</a></td>
 			  </tr>
 			</tfoot>
-		</table>		
+		</table>
 	</form>
 	</div>
-</div> 
+</div>
 		</div>
 		<div class="clearfix"></div>
 	</div>

@@ -1,36 +1,32 @@
 <?php
 namespace Decidir\Data\SplitTransacciones;
 
-class MontoFijo extends AbstractData 
+class MontoFijo extends AbstractData
 {
 	protected $nrocomercio;
 	protected $impdist;
 	protected $sitedist;
 	protected $cuotasdist;
 
-	public __construct(array $data) {
+	public function __construct(array $data) {
 		$this->setRequiredFields(array(
-			"nrocomercio" => array(
-				"name" => "SplitTransacciones - Nro Comercio",
-				"xml" => "NROCOMERCIO"
-			), 
 			"impdist" => array(
 				"name" => "SplitTransacciones - IMPDIST",
 				"xml" => "IMPDIST"
-			), 
+			),
 			"sitedist" => array(
 				"name" => "SplitTransacciones - SITEDIST",
 				"xml" => "SITEDIST"
-			), 
+			),
 			"cuotasdist" => array(
 				"name" => "SplitTransacciones - CUOTASDIST",
 				"xml" => "CUOTASDIST"
-			), 			
+			),
 		));
-		
+
 		parent::__construct($data);
 	}
-	
+
 	public function getNrocomercio(){
 		return $this->nrocomercio;
 	}
@@ -62,5 +58,5 @@ class MontoFijo extends AbstractData
 	public function setCuotasdist($cuotasdist){
 		$this->cuotasdist = $cuotasdist;
 	}
-	
+
 }

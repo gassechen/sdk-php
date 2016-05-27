@@ -7,7 +7,7 @@ $operationid = $_GET['ord'];
 $db = new FlatDb();
 $db->openTable('ordenes');
 
-$orden = $db->getRecords(array("id","status","data","mediodepago","sar","form","gaa","requestkey","publicrequestkey","answerkey"),array("id" => $operationid));
+$orden = $db->getRecords(array("id","merchantId","security","status","data","mediodepago","sar","form","gaa","requestkey","publicrequestkey","answerkey"),array("id" => $operationid));
 
 $data = json_decode($orden[0]['data'],true);
 ?>
