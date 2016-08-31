@@ -1,7 +1,7 @@
 <?php
 namespace Decidir;
 
-define('DECIDIR_VERSION','1.0.2');
+define('DECIDIR_VERSION','1.1.0');
 
 class Connector
 {

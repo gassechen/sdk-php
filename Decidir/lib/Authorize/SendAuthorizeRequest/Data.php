@@ -2,56 +2,59 @@
 namespace Decidir\Authorize\SendAuthorizeRequest;
 
 class Data extends \Decidir\Data\AbstractData {
-	
+
 	protected $security;
 	protected $encoding_method = "XML";
 	protected $merchant;
-	
+
 	protected $nro_comercio;
 	protected $nro_operacion;
 	protected $monto;
 	protected $email_cliente;
-	
-	protected $mediopago_data = null;	
+
+	protected $mediopago_data = null;
 	protected $cybersource_data = null;
 	protected $agregadores_data = null;
 	protected $split_data = null;
-	
+
 	public function __construct(array $data) {
 		$this->setRequiredFields(array(
 			"security" => array(
 				"name" => "Security"
-			), 
+			),
 			"merchant" => array(
-				"name" => "Merchant - Nro Comercio", 
-				"xml" => "NROCOMERCIO"
-			), 
+				"name" => "Merchant"
+			),
 			"nro_operacion" => array(
-				"name" => "Nro Operación", 
+				"name" => "Nro Operación",
 				"xml" => "NROOPERACION"
-			), 
+			),
 			"monto" => array(
-				"name" => "Monto", 
-				"xml" => "MONTO"		
-			), 
+				"name" => "Monto",
+				"xml" => "MONTO"
+			),
 			"email_cliente" => array(
-				"name" => "Email Cliente", 
-				"xml" => "EMAILCLIENTE"		
-			), 
+				"name" => "Email Cliente",
+				"xml" => "EMAILCLIENTE"
+			),
 		));
-		
+
 		$this->setOptionalFields(array(
+			"nro_comercio" => array(
+				"name" => "Nro comercio",
+				"xml" => "NROCOMERCIO"
+			),
 			"encoding_method" => array(
 				"name" => "Encoding Method"
 			)
 		));
-		
+
 		parent::__construct($data);
 
-		$this->nro_comercio 	= $data['merchant'];
-		$this->monto 			= number_format($data['monto'],2,".","");	
+		$this->nro_comercio 	= array_key_exists('nro_comercio', $data) ? $data['nro_comercio'] : $data['merchant'];
+		$this->monto 			= number_format($data['monto'],2,".","");
 	}
-	
+
 	public function getSecurity() {
 		return $this->security;
 	}
@@ -79,7 +82,7 @@ class Data extends \Decidir\Data\AbstractData {
 	public function getEmailCliente() {
 		return $this->email_cliente;
 	}
-	
+
 	public function setSecurity($security) {
 		$this->security = $security;
 	}
@@ -106,43 +109,43 @@ class Data extends \Decidir\Data\AbstractData {
 
 	public function setEmailCliente($email_cliente) {
 		$this->email_cliente = $email_cliente;
-	}		
-	
+	}
+
 	public function getMedioPago() {
 		return $this->mediopago_data;
 	}
-	
+
 	public function setMedioPago(\Decidir\Data\Mediopago\AbstractData $mediopago_data) {
 		$this->mediopago_data = $mediopago_data;
 	}
-	
+
 	public function getCybersourceData() {
 		return $this->cybersource_data;
 	}
-	
+
 	public function setCybersourceData(\Decidir\Data\Cybersource\AbstractData $cybersource_data) {
 		$this->cybersource_data = $cybersource_data;
 	}
-	
+
 	public function getAgregadoresData() {
 		return $this->agregadores_data;
 	}
-	
+
 	public function setAgregadoresData(\Decidir\Data\ComerciosAgregadores $agregadores_data) {
 		$this->agregadores_data = $agregadores_data;
 	}
-	
+
 	public function getSplitData() {
 		return $this->split_data;
 	}
-	
+
 	public function setSplitData(\Decidir\Data\SplitTransacciones\AbstractData $split_data) {
 		$this->split_data = $split_data;
 	}
-	
+
 	public function getData() {
 		$output  = $this->getXmlData();
-		
+
 		if($this->mediopago_data != null)
 			$output .= $this->mediopago_data->getData();
 		if($this->cybersource_data != null)
@@ -151,9 +154,9 @@ class Data extends \Decidir\Data\AbstractData {
 			$output .= $this->agregadores_data->getData();
 		if($this->split_data != null)
 			$output .= $this->split_data->getData();
-		
+
 		$output = '<Request>'.$output.'</Request>';
-		
+
 		$data = new \stdClass();
 		$data->Security = $this->security;
 		$data->Merchant = $this->merchant;
